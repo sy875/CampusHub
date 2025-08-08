@@ -1,39 +1,6 @@
 import mongoose from "mongoose";
 import { Branch } from "./branch.models";
 
-const subjectSchema = new mongoose.Schema(
-  {
-    code: {
-      type: String,
-      require: String,
-    },
-    title: {
-      type: String,
-      required: String,
-    },
-  },
-  { _id: false }
-);
-
-const semesterSchema = new mongoose.Schema(
-  {
-    semesterNumber: {
-      type: Number,
-      required: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: true,
-    },
-    subjects: [subjectSchema],
-  },
-  { _id: false }
-);
-
 const courseSchema = new mongoose.Schema(
   {
     branch: {
@@ -56,7 +23,12 @@ const courseSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    semesters: [semesterSchema],
+    semesters: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Semester",
+      },
+    ],
   },
   { timestamps: true }
 );

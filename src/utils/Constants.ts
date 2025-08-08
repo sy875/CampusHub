@@ -38,3 +38,19 @@ export const MaterialType = {
 };
 
 export const AvailableMaterialType = Object.values(MaterialType);
+
+export const SemesterDurations = {
+  SIXMONTHS: "6_months",
+  OneYear: "1_year",
+};
+
+export const AvailableSemesterDurations = Object.values(SemesterDurations);
+
+export const AttendanceType = {
+  PRESENT: "present",
+  ABSENT: "absent",
+  LATE: "late",
+  LEAVE: "leave",
+};
+
+export const AvailableAttendanceType = Object.values(AttendanceType);
