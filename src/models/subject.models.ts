@@ -1,17 +1,25 @@
 import mongoose from "mongoose";
 
-const subjectSchema = new mongoose.Schema({
-  code: {
-    type: String,
-    require: String,
+const subjectSchema = new mongoose.Schema(
+  {
+    code: {
+      type: String,
+      require: String,
+    },
+    title: {
+      type: String,
+      required: String,
+    },
+    descripiton: {
+      type: String,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required:true
+    },
   },
-  title: {
-    type: String,
-    required: String,
-  },
-  descripiton: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 
 export const Subject = mongoose.model("Subject", subjectSchema);

@@ -23,6 +23,11 @@ const courseSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
     semesters: [
       {
         type: mongoose.Schema.Types.ObjectId,

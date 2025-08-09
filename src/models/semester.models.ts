@@ -21,9 +21,10 @@ const semesterSchema = new mongoose.Schema(
       enum: AvailableSemesterDurations,
       default: SemesterDurations.SIXMONTHS,
     },
-    course: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
     },
     subjects: [
       {

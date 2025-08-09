@@ -36,6 +36,11 @@ const courseSessionSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 );

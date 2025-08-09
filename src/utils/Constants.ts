@@ -41,7 +41,7 @@ export const AvailableMaterialType = Object.values(MaterialType);
 
 export const SemesterDurations = {
   SIXMONTHS: "6_months",
-  OneYear: "1_year",
+  ONEYEAR: "1_year",
 };
 
 export const AvailableSemesterDurations = Object.values(SemesterDurations);

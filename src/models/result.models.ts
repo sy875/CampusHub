@@ -15,6 +15,11 @@ const subjectMarkSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { _id: false }
 );

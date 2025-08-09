@@ -11,6 +11,12 @@ const enrollmentSchema = new mongoose.Schema(
     courseSession: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CourseSession",
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
     },
   },
   { timestamps: true }
