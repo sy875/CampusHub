@@ -5,10 +5,18 @@ const subjectSchema = new mongoose.Schema(
     code: {
       type: String,
       require: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
     },
     title: {
       type: String,
-      required: String,
+      trim: true,
+      index: true,
+      lowercase: true,
+      unique: true,
+      required: true,
     },
     descripiton: {
       type: String,
@@ -16,7 +24,7 @@ const subjectSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required:true
+      required: true,
     },
   },
   { timestamps: true }

@@ -12,11 +12,6 @@ const AnnouncementSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    author: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: User,
-      required: true,
-    },
     effectiveFrom: {
       type: Date,
       required: true,

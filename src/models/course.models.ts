@@ -12,8 +12,9 @@ const courseSchema = new mongoose.Schema(
       type: String,
       required: true,
       index: true,
-      trime: true,
+      trim: true,
       lowercase: true,
+      unique: true,
     },
     title: {
       type: String,

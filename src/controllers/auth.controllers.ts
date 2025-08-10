@@ -63,16 +63,16 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 
   await user.save({ validateBeforeSave: false });
 
-  await sendEmail({
-    email: user?.email,
-    subject: "Please verify your email",
-    mailgenContent: emailVerificationMailgenContent(
-      user.username,
-      `${req.protocol}://${req.get(
-        "host"
-      )}/api/v1/auth/verify-email/${unHashedToken}`
-    ),
-  });
+  // await sendEmail({
+  //   email: user?.email,
+  //   subject: "Please verify your email",
+  //   mailgenContent: emailVerificationMailgenContent(
+  //     user.username,
+  //     `${req.protocol}://${req.get(
+  //       "host"
+  //     )}/api/v1/auth/verify-email/${unHashedToken}`
+  //   ),
+  // });
 
   if (!createdUser)
     throw new ApiError(500, "Something went wrong while registering user");

@@ -4,7 +4,9 @@ import { ApiError } from "../utils/api-error";
 import jwt from "jsonwebtoken";
 import { MyJwtPayload } from "../types/user";
 import { User } from "../models/user.models";
-
+import { createHash } from "crypto";
+import crypto from "crypto";
+import { ApiKey } from "../models/apikey.models";
 /**
  * @description This middleware is responsible for validating access token
  */
@@ -42,7 +44,7 @@ export const verifyJWT = asyncHandler(
 
 /**
  *
- * @param {AvailableUserRoles} roles
+ * @param {AvailableUserRolez} roles
  * @description  This middleware is responsible for validating multiple user roles at a time
  */
 export const verifyPermission = (roles = ["admin"]) =>
@@ -56,3 +58,34 @@ export const verifyPermission = (roles = ["admin"]) =>
       throw new ApiError(403, "You are not allowed to perform this operation");
     }
   });
+
+/**
+ * @description This middleware is responsible for validating api key
+ */
+export const verifyApiKey = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user);
+    if (req.user) {
+      return next();
+    }
+
+    const incomingApiKey = req.header("x-api-key") || req.query.apiKey;
+
+    if (!incomingApiKey || typeof incomingApiKey != "string") {
+      throw new ApiError(401, "Api key is required");
+    }
+
+    const hashedApiKey = crypto
+      .createHash("sha256")
+      .update(incomingApiKey)
+      .digest("hex");
+
+    const apiKeyExist = await ApiKey.findOne({ key: hashedApiKey });
+
+    if (!apiKeyExist || !apiKeyExist.isActive) {
+      throw new ApiError(401, "Invalid Api key");
+    }
+
+    next();
+  }
+);

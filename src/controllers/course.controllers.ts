@@ -10,6 +10,12 @@ export const createCourse = asyncHandler(
   async (req: Request, res: Response) => {
     const { branch, code, title, description, semesters } = req.body;
 
+    const duplicateCode = code.trim().toLowerCase();
+
+    const courseExist = await Course.findOne({ code: duplicateCode });
+    if (courseExist) {
+      throw new ApiError(409, `Course already exist with ${duplicateCode}`);
+    }
     const branchExist = await Branch.findById(branch);
 
     if (!branchExist) {
@@ -43,7 +49,6 @@ export const createCourse = asyncHandler(
       );
   }
 );
-
 export const getAllCourse = asyncHandler(
   async (req: Request, res: Response) => {
     const allCourse = await Course.find({});
@@ -66,12 +71,16 @@ export const updateCourse = asyncHandler(
   async (req: Request, res: Response) => {
     const { courseId } = req.params;
     const { title, description } = req.body;
-    const course = await Course.findByIdAndUpdate(courseId, {
-      $set: {
-        title,
-        description,
+    const course = await Course.findByIdAndUpdate(
+      courseId,
+      {
+        $set: {
+          title,
+          description,
+        },
       },
-    });
+      { new: true }
+    );
     if (!course) {
       throw new ApiError(404, "Course does not exist");
     }
@@ -81,7 +90,7 @@ export const updateCourse = asyncHandler(
         new ApiResponse(
           200,
           { updatedCourse: course },
-          "Course fetched successfully"
+          "Course updated successfully"
         )
       );
   }
@@ -99,7 +108,7 @@ export const deleteCourse = asyncHandler(
         new ApiResponse(
           200,
           { deletedCourse: course },
-          "Course fetched successfully"
+          "Course deleted successfully"
         )
       );
   }

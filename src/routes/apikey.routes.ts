@@ -1,0 +1,22 @@
+import { Router } from "express";
+import {
+  createApiKey,
+  deleteApiKey,
+  getApiKeys,
+  updateApiKey,
+} from "../controllers/apikey.controllers";
+import { verifyJWT, verifyPermission } from "../middleware/auth.middleware";
+import { UserRolesEnum } from "../utils/Constants";
+import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators";
+
+const router = Router();
+
+router.route("/").get(verifyJWT,getApiKeys).post(verifyJWT, createApiKey);
+
+router
+  .route("/:apikeyId")
+  .all(mongodIdPathVariableValidator("apikeyId"))
+  .patch(verifyJWT, updateApiKey)
+  .delete(verifyJWT, deleteApiKey);
+
+export default router;

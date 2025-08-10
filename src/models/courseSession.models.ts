@@ -21,12 +21,6 @@ const courseSessionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    studentsEnrolled: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
     instructors: [
       {
         type: mongoose.Schema.Types.ObjectId,
