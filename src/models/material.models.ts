@@ -19,11 +19,6 @@ const materialSchema = new mongoose.Schema(
       ref: "CourseSession",
       required: true,
     },
-    course: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
-      required: true,
-    },
     materialType: {
       type: String,
       enum: AvailableMaterialType,
