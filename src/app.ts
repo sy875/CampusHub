@@ -43,6 +43,8 @@ import courseRoutes from "./routes/course.routes.js";
 import courseSessionRoutes from "./routes/courseSession.routes.js";
 import enrollmentRoutes from "./routes/enrollment.routes.js";
 import announcementRoutes from "./routes/announcement.routes.js";
+import materialRoutes from "./routes/material.routes.js";
+import resultRoutes from "./routes/result.routes.js";
 
 import { errorHandler } from "./middleware/error.middleware";
 
@@ -56,6 +58,8 @@ app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/courseSession", courseSessionRoutes);
 app.use("/api/v1/enrollment", enrollmentRoutes);
 app.use("/api/v1/announcement", announcementRoutes);
+app.use("/api/v1/material", materialRoutes);
+app.use("/api/v1/result", resultRoutes);
 
 app.use(errorHandler);
 

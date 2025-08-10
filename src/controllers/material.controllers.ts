@@ -22,6 +22,7 @@ export const createMaterial = asyncHandler(
       materialType,
       materialUrl,
       availableTo,
+      uploadedBy: req.user._id,
     });
 
     return res

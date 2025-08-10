@@ -22,7 +22,7 @@ const semesterSchema = new mongoose.Schema(
       default: SemesterDurations.SIXMONTHS,
     },
     createdBy: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },

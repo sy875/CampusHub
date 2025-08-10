@@ -15,16 +15,16 @@ const subjectMarkSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    createdBy: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-      required: true,
-    },
   },
   { _id: false }
 );
 
 const resultSchema = new mongoose.Schema({
+  student: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   courseSession: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "CourseSession",
@@ -42,6 +42,11 @@ const resultSchema = new mongoose.Schema({
   },
   isPromoted: {
     type: Boolean,
+    required: true,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     required: true,
   },
 });

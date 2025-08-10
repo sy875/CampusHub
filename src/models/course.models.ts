@@ -25,7 +25,7 @@ const courseSchema = new mongoose.Schema(
       type: String,
     },
     createdBy: {
-      type: mongoose.Schema.ObjectId,
+       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
