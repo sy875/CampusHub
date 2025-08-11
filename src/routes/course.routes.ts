@@ -9,17 +9,31 @@ import {
   updateCourse,
 } from "../controllers/course.controllers";
 import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators";
+import {
+  createMaterial,
+  getMaterial,
+  getMaterialByCourse,
+} from "../controllers/material.controllers";
 
 const router = Router();
 
 router
   .route("/")
-  .post(
-    verifyJWT,
-    verifyPermission([UserRolesEnum.ADMIN, UserRolesEnum.FACULTY]),
-    createCourse
-  )
+  .post(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), createCourse)
   .get(getAllCourse);
+
+router
+  .route("/:courseId/materials")
+  .get(
+    mongodIdPathVariableValidator("courseId"),
+    verifyPermission([UserRolesEnum.FACULTY, UserRolesEnum.STUDENT]),
+    getMaterialByCourse
+  )
+  .post(
+    mongodIdPathVariableValidator("courseId"),
+    verifyPermission([UserRolesEnum.FACULTY]),
+    createMaterial
+  );
 
 router
   .route("/:courseId")

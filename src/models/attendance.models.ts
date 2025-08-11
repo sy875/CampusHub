@@ -18,6 +18,7 @@ const attendanceScema = new mongoose.Schema(
     },
     markedAt: {
       type: Date,
+      default:Date.now,
       required: true,
     },
   },

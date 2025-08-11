@@ -15,7 +15,7 @@ const router = Router();
 
 router
   .route("/")
-  .post(verifyJWT, verifyPermission([UserRolesEnum.FACULTY,UserRolesEnum.ADMIN]), createMaterial)
+  .post(verifyJWT, verifyPermission([UserRolesEnum.FACULTY]), createMaterial)
   .get(getAllMaterial);
 
 router

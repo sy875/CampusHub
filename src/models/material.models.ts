@@ -14,10 +14,13 @@ const materialSchema = new mongoose.Schema(
       index: true,
       lowercase: true,
     },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+    },
     courseSession: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CourseSession",
-      required: true,
     },
     materialType: {
       type: String,

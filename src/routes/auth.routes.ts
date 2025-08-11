@@ -1,7 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
 import {
-  assignRole,
   changeCurrentPassword,
   forgetPasswordRequest,
   getCurrentUser,
@@ -28,10 +27,15 @@ import { UserRolesEnum } from "../utils/Constants.js";
 import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators.js";
 //import passport config
 import "../passport/index.js";
+import { createApiKey, getApiKeys } from "../controllers/apikey.controllers.js";
 const router = Router();
 
-router.route("/signup").post(userRegisterValidator(), validate, signup);
+router.route("/register").post(userRegisterValidator(), validate, signup);
 router.route("/login").post(userLoginValidator(), validate, login);
+router
+  .route("/api-key")
+  .get(verifyJWT, getApiKeys)
+  .post(verifyJWT, createApiKey);
 
 router.route("/logout").get(verifyJWT, logout);
 router.route("/refresh-access-token").get(refreshAccessToken);
@@ -64,16 +68,9 @@ router
     changeCurrentPassword
   );
 
-router.route("/assign-role/:userId").post(
-  verifyJWT,
-  // verifyPermission([UserRolesEnum.ADMIN]),
-  mongodIdPathVariableValidator("userId"),
-  userAssignRoleValidator(),
-  validate,
-  assignRole
-);
 
-router.route("/current-user").get(verifyJWT, getCurrentUser);
+
+router.route("/me").get(verifyJWT, getCurrentUser);
 
 // SSO routes
 router.route("/google").get(

@@ -9,6 +9,7 @@ import ApiResponse from "../utils/api-response";
 export const createCourseSession = asyncHandler(
   async (req: Request, res: Response) => {
     const {
+      code,
       course,
       startDate,
       endDate,
@@ -27,6 +28,7 @@ export const createCourseSession = asyncHandler(
     }
 
     const newCourseSession = await CourseSession.create({
+      code,
       course,
       startDate,
       endDate,

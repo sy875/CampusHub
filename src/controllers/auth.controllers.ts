@@ -125,32 +125,33 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     );
 });
 
+export const handleSocialLogin = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user = await User.findById(req.user?._id);
 
-export const handleSocialLogin = asyncHandler(async (req: Request, res: Response) => {
-  const user = await User.findById(req.user?._id);
+    if (!user) {
+      throw new ApiError(404, "User does not exist");
+    }
 
-  if (!user) {
-    throw new ApiError(404, "User does not exist");
-  }
-
-  const { accessToken, refreshToken } = await generateAccessAndRefeshTokens(
-    user._id
-  );
-
-  const options = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-  };
-
-  return res
-    .status(301)
-    .cookie("accessToken", accessToken, options) // set the access token in the cookie
-    .cookie("refreshToken", refreshToken, options) // set the refresh token in the cookie
-    .redirect(
-      // redirect user to the frontend with access and refresh token in case user is not using cookies
-      `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+    const { accessToken, refreshToken } = await generateAccessAndRefeshTokens(
+      user._id
     );
-});
+
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    };
+
+    return res
+      .status(301)
+      .cookie("accessToken", accessToken, options) // set the access token in the cookie
+      .cookie("refreshToken", refreshToken, options) // set the refresh token in the cookie
+      .redirect(
+        // redirect user to the frontend with access and refresh token in case user is not using cookies
+        `${process.env.CLIENT_SSO_REDIRECT_URL}?accessToken=${accessToken}&refreshToken=${refreshToken}`
+      );
+  }
+);
 
 export const logout = asyncHandler(async (req: Request, res: Response) => {
   await User.findByIdAndUpdate(
@@ -225,7 +226,7 @@ export const refreshAccessToken = asyncHandler(
 export const forgetPasswordRequest = asyncHandler(
   async (req: Request, res: Response) => {
     const { email } = req.body;
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
     if (!user) {
       throw new ApiError(404, "User does not exist");
     }
@@ -315,20 +316,6 @@ export const changeCurrentPassword = asyncHandler(
   }
 );
 
-export const assignRole = asyncHandler(async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const { role } = req.body;
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new ApiError(200, "User does not exist");
-  }
-  user.role = role;
-  await user.save({ validateBeforeSave: false });
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, {}, "Role changed successfully"));
-});
 
 export const getCurrentUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -349,14 +336,11 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
     .createHash("sha256")
     .update(verificationToken)
     .digest("hex");
-    
-  
+
   const user = await User.findOne({
     emailVerificationToken: hashedToken,
     emailVerificationExpiry: { $gt: Date.now() },
   });
-
-
 
   if (!user) {
     throw new ApiError(489, "Token is invalid or expired");
@@ -364,7 +348,7 @@ export const verifyEmail = asyncHandler(async (req: Request, res: Response) => {
 
   user.emailVerificationToken = undefined;
   user.emailVerificationExpiry = undefined;
-  user.isEmailVerified = true
+  user.isEmailVerified = true;
 
   await user.save({ validateBeforeSave: false });
 
@@ -391,13 +375,14 @@ export const resendEmailVerification = asyncHandler(
       throw new ApiError(409, "Email is already verified");
     }
 
-    const { unHashedToken, hashedToken, tokenExpiry } = user?.generateTemporaryToken();
+    const { unHashedToken, hashedToken, tokenExpiry } =
+      user?.generateTemporaryToken();
 
     user.emailVerificationToken = hashedToken;
     user.emailVerificationExpiry = tokenExpiry;
 
     await user.save({ validateBeforeSave: false });
-  
+
     await sendEmail({
       email: user?.email,
       subject: "Please verify your email",

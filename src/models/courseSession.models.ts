@@ -4,6 +4,10 @@ import { User } from "./user.models";
 
 const courseSessionSchema = new mongoose.Schema(
   {
+    code: {
+      type: String,
+      required: true,
+    },
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: Course,

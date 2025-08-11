@@ -5,8 +5,7 @@ import {
   getApiKeys,
   updateApiKey,
 } from "../controllers/apikey.controllers";
-import { verifyJWT, verifyPermission } from "../middleware/auth.middleware";
-import { UserRolesEnum } from "../utils/Constants";
+import { verifyJWT} from "../middleware/auth.middleware";
 import { mongodIdPathVariableValidator } from "../validators/common/mongodb.validators";
 
 const router = Router();

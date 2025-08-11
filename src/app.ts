@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import connectDb from "./db";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
@@ -45,6 +44,8 @@ import enrollmentRoutes from "./routes/enrollment.routes.js";
 import announcementRoutes from "./routes/announcement.routes.js";
 import materialRoutes from "./routes/material.routes.js";
 import resultRoutes from "./routes/result.routes.js";
+import attendanceRoutes from "./routes/attendance.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 import { errorHandler } from "./middleware/error.middleware";
 
@@ -54,12 +55,15 @@ app.use("/api/v1/apikey", apikeyRoutes);
 app.use("/api/v1/subject", subjectRoutes);
 app.use("/api/v1/branch", branchRoutes);
 app.use("/api/v1/semester", semesterRoutes);
-app.use("/api/v1/course", courseRoutes);
+app.use("/api/v1/courses", courseRoutes);
 app.use("/api/v1/courseSession", courseSessionRoutes);
 app.use("/api/v1/enrollment", enrollmentRoutes);
-app.use("/api/v1/announcement", announcementRoutes);
+app.use("/api/v1/announcements", announcementRoutes);
 app.use("/api/v1/material", materialRoutes);
-app.use("/api/v1/result", resultRoutes);
+app.use("/api/v1/results", resultRoutes);
+app.use("/api/v1/attendance", attendanceRoutes);
+//admin
+app.use("/api/v1/admin", adminRoutes);
 
 app.use(errorHandler);
 
