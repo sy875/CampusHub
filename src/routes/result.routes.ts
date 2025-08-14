@@ -4,6 +4,7 @@ import {
   deleteResult,
   getAllResult,
   getResult,
+  getResultByStudentId,
   updateResult,
 } from "../controllers/result.controllers";
 import { verifyJWT, verifyPermission } from "../middleware/auth.middleware";
@@ -20,6 +21,8 @@ router
   )
   .get(getAllResult)
   .post(createResult);
+
+router.route("/:studentId").get(getResultByStudentId);
 
 router
   .route("/:resultId")

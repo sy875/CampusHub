@@ -5,7 +5,9 @@ import { User } from "../models/user.models";
 import { ApiError } from "../utils/api-error";
 
 export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
-  const allUsers = await User.find({});
+  const allUsers = await User.find({}).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
+  );
   return res
     .status(200)
     .json(new ApiResponse(200, allUsers, "All users fetched successfully"));

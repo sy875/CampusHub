@@ -13,7 +13,7 @@ export const createMaterial = asyncHandler(
       req.body;
 
     if (courseId) {
-      const courseExist = await CourseSession.findById(courseId);
+      const courseExist = await Course.findById(courseId);
       if (!courseExist) {
         throw new ApiError(404, "Course  does not exist");
       }
@@ -61,7 +61,10 @@ export const getMaterialByCourse = asyncHandler(
       throw new ApiError(404, "Course does not exist");
     }
 
-    const materials = await Material.find({ course: courseId });
+    const materials = await Material.find({ course: courseId }).populate({
+      path: "course",
+      select: "code title",
+    });
 
     return res
       .status(200)

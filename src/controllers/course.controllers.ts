@@ -51,10 +51,74 @@ export const createCourse = asyncHandler(
 );
 export const getAllCourse = asyncHandler(
   async (req: Request, res: Response) => {
-    const allCourse = await Course.find({});
+    // const allCourse = await Course.find({});
+    const allCourses = await Course.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $lookup: {
+          from: "branches",
+          localField: "branch",
+          foreignField: "_id",
+          as: "branch",
+          pipeline: [
+            {
+              $project: {
+                title: 1,
+                _id: 0,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "semesters",
+          localField: "semesters",
+          foreignField: "_id",
+          as: "semesters",
+          pipeline: [
+            {
+              $lookup: {
+                from: "subjects",
+                localField: "subjects",
+                foreignField: "_id",
+                as: "subjects",
+                pipeline: [
+                  {
+                    $project: {
+                      code: 1,
+                      title: 1,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              $project: {
+                semesterCode: 1,
+                semesterNumber: 1,
+                duration: 1,
+                subjects: 1,
+              },
+            },
+          ],
+        },
+      },
+
+      {
+        $addFields: {
+          branch: { $first: "$branch" },
+        },
+      },
+    ]);
+
     return res
       .status(200)
-      .json(new ApiResponse(200, allCourse, "All Course fetched successfully"));
+      .json(
+        new ApiResponse(200, allCourses, "All Course fetched successfully")
+      );
   }
 );
 export const getCourse = asyncHandler(async (req: Request, res: Response) => {

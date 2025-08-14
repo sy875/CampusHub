@@ -7,6 +7,7 @@ import { User } from "../models/user.models";
 import { createHash } from "crypto";
 import crypto from "crypto";
 import { ApiKey } from "../models/apikey.models";
+import { EXCLUDE_API_KEY_VERIFICATION } from "../utils/Constants";
 /**
  * @description This middleware is responsible for validating access token
  */
@@ -26,7 +27,7 @@ export const verifyJWT = asyncHandler(
         process.env.ACCESS_TOKEN_SECRET!
       ) as MyJwtPayload;
       const user = await User.findById(decodedToken._id).select(
-        "-password,-refreshToken -emailVerificationToken -emailVerificationExpiry"
+        "-password -refreshToken -emailVerificationToken -emailVerificationExpiry"
       );
       if (!user) {
         throw new ApiError(401, "Invalid Access Token");
@@ -64,7 +65,24 @@ export const verifyPermission = (roles = ["admin"]) =>
  */
 export const verifyApiKey = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user);
+    if (req.originalUrl.startsWith(EXCLUDE_API_KEY_VERIFICATION)) return next();
+    const token =
+      req.cookies?.accessToken ||
+      req.header("Authorization")?.replace("Bearer ", "");
+
+    if (token) {
+      await new Promise<void>((resolve, reject) => {
+        try {
+          verifyJWT(req, res, (err?: any) => {
+            if (err) return reject(err);
+            resolve();
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+    }
+
     if (req.user) {
       return next();
     }

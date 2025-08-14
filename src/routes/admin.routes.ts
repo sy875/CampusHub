@@ -9,13 +9,12 @@ import { validate } from "../validators/validate";
 const router = Router();
 
 router.use(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]));
+router.use(verifyJWT);
 
 router.route("/users").get(getAllUsers);
 router
   .route("/users/:id/role")
   .post(
-    verifyJWT,
-    verifyPermission([UserRolesEnum.ADMIN]),
     mongodIdPathVariableValidator("id"),
     userAssignRoleValidator(),
     validate,

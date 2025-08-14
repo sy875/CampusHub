@@ -54,3 +54,6 @@ export const AttendanceType = {
 };
 
 export const AvailableAttendanceType = Object.values(AttendanceType);
+
+
+export const  EXCLUDE_API_KEY_VERIFICATION = "/api/v1/auth";

@@ -26,7 +26,10 @@ export const createAnnouncement = asyncHandler(
 
 export const getAllAnnouncement = asyncHandler(
   async (req: Request, res: Response) => {
-    const allAnnouncement = await Announcement.find({});
+    const allAnnouncement = await Announcement.find({}).populate({
+      path:"createdBy",
+      select:"-_id username"
+    })
 
     return res
       .status(200)
@@ -43,7 +46,7 @@ export const getAllAnnouncement = asyncHandler(
 export const getAnnouncement = asyncHandler(
   async (req: Request, res: Response) => {
     const { announcementId } = req.params;
-    const announcement = await Announcement.findById(announcementId);
+    const announcement = await Announcement.findById(announcementId)
 
     if (!announcement) {
       throw new ApiError(404, "Announcement does not exist");

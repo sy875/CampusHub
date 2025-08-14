@@ -6,6 +6,7 @@ import { Subject } from "../models/subject.models";
 import { Result } from "../models/result.models";
 import ApiResponse from "../utils/api-response";
 import { User } from "../models/user.models";
+import { AvailableUserRoles, UserRolesEnum } from "../utils/Constants";
 
 export const createResult = asyncHandler(
   async (req: Request, res: Response) => {
@@ -62,6 +63,41 @@ export const getAllResult = asyncHandler(
   }
 );
 
+export const getResultByStudentId = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { studentId } = req.params;
+
+    if (
+      req.user._id.toString() != studentId &&
+      req.user.role == UserRolesEnum.STUDENT
+    ) {
+      throw new ApiError(403, "You are not allowed for this operation");
+    }
+
+    const result = await Result.find({ student: studentId })
+      .select("-createdBy")
+      .populate({
+        path: "student",
+        select: "-_id username",
+      })
+      .populate({
+        path: "courseSession",
+        select: "-_id code",
+      })
+      .populate({
+        path: "semester",
+        select: "-_id semesterCode semesterNumber",
+      });
+
+    if (!result) {
+      throw new ApiError(404, "Result does not exist");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, result, "Result fetched successfully"));
+  }
+);
 export const getResult = asyncHandler(async (req: Request, res: Response) => {
   const { resultId } = req.params;
 
