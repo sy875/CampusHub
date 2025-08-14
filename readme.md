@@ -65,7 +65,7 @@ It provides a centralized hub for **announcements, courses, materials**, and mor
 ## 🔧 Installation & Setup
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/campushub.git
+   git clone https://github.com/sy875/CampusHub.git
    cd campushub
    npm install
    npm run dev
