@@ -3,6 +3,9 @@
 CampusHub is a role-based campus management platform that allows **students, faculty, and administrators** to collaborate seamlessly.  
 It provides a centralized hub for **announcements, courses, materials**, and more — making campus communication and resource sharing easier.
 
+
+You can explore the API endpoints through our [Postman Collection](https://www.postman.com/lively-firefly-527899/workspace/campushub).
+
 ---
 
 ## 🚀 Features
@@ -56,17 +59,18 @@ It provides a centralized hub for **announcements, courses, materials**, and mor
 | Script         | Description |
 |---------------|-------------|
 | `npm run build` | Install dependencies & compile TypeScript |
-| `npm run tsc`   | Watch & compile TypeScript files |
+| `npm run prepare`| compile TypeScript files  and prepare husky
 | `npm start`     | Start the server from compiled files (`dist`) |
 | `npm run dev`   | Dev mode with hot reload & auto compile |
 
 ---
 
 ## 🔧 Installation & Setup
-1. **Clone the repository**
+   **Clone the repository**
    ```bash
    git clone https://github.com/sy875/CampusHub.git
    cd campushub
    npm install
+   npm run prepare
    npm run dev
 

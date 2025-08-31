@@ -5,8 +5,10 @@
   "scripts": {
     "build": "npm i && tsc",
     "tsc": "tsc -w",
+    "pre-commit": "lint-staged",
+    "prepare": "tsc && node dist/prepare.js",
     "start": "node -r dotenv/config ./dist/index.js",
-    "dev": "tsc-watch --onSuccess \"nodemon -r dotenv/config --experimental-json-modules  dist/index.js\""
+    "dev": "tsc-watch --onSuccess \"nodemon -r dotenv/config  dist/index.js\""
   },
   "keywords": [],
   "author": "",
@@ -29,10 +31,11 @@
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
-    "request-ip": "^3.3.0",
-    "tsc-watch": "^7.1.1"
+    "request-ip": "^3.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
@@ -45,6 +48,10 @@
     "@types/passport": "^1.0.17",
     "@types/passport-github2": "^1.2.9",
     "@types/passport-google-oauth20": "^2.0.16",
-    "@types/request-ip": "^0.0.41"
+    "@types/request-ip": "^0.0.41",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "tsc-watch": "^7.1.1"
   }
 }
